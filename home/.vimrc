@@ -42,3 +42,4 @@ autocmd vimenter * NERDTree
 map <C-g> :tabp<CR>
 map <C-h> :tabn<CR>
 map <C-n> :tabnew<CR>
+map <C-t> :NERDTreeToggle
