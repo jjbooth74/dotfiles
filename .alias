@@ -1,0 +1,16 @@
+#nav:
+alias ls="ls -aFG"
+alias cls="clear;printf '\n';pwd;printf '\n';ls -FG"
+alias ..="cd .."
+alias up="clear;cd ..;pwd;ls -FG"
+dev() { cd ~/Development/$1;clear;printf '\n';pwd;printf '\n';ls -FG; }
+path() { old=$IFS; IFS=:; printf "%s\n" $PATH; IFS=$old; }
+
+#profile:
+alias profile="source ~/.bash_profile"
+alias aliases="subl ~/.alias"
+
+#git:
+alias pull="git pull origin"
+alias status="git status"
+alias master="git checkout master"
