@@ -1,7 +1,5 @@
 
 #Some environment variables:
-export EO_API_URL=http://ng2.dev
-export DW_API_URL=http://localhost:5000
 export EDITOR="$HOME/bin/subl -w -n"
 
 # change prompt
