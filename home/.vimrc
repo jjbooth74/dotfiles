@@ -2,7 +2,7 @@ call pathogen#infect()
 
 scriptencoding utf-8
 
-colorscheme atom-dark
+colorscheme Tomorrow-Night
 
 set nocompatible
 syntax on
@@ -37,9 +37,10 @@ let g:fuzzy_ceiling=20000
 " l/jeweler.rb)
 let g:fuzzy_path_display = 'relative_path'
 
-autocmd vimenter * NERDTree
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
 map <C-g> :tabp<CR>
 map <C-h> :tabn<CR>
 map <C-n> :tabnew<CR>
-map <C-t> :NERDTreeToggle
+map <C-t> :NERDTreeToggle<CR>
