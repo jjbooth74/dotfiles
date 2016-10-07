@@ -1,6 +1,7 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =4
+let g:netrw_dirhist_cnt =5
 let g:netrw_dirhist_1='/Users/joshuabooth'
 let g:netrw_dirhist_2='/Users/jbooth/.oh-my-zsh'
 let g:netrw_dirhist_3='/Users/jbooth/Development'
 let g:netrw_dirhist_4='/Users/jbooth/Development/clubhouse'
+let g:netrw_dirhist_5='/Users/jbooth/Development/gatekeeper'

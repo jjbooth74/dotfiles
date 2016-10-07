@@ -1,3 +1,5 @@
+let mapleader="\<cr>"
+
 call pathogen#infect()
 
 scriptencoding utf-8
@@ -9,6 +11,15 @@ syntax on
 
 filetype plugin indent on
 
+" Make new splits open in the right spot
+set splitbelow
+set splitright
+" Use ctrl-jklh to navigate splits
+nnoremap <C-j> <C-w><C-j>
+nnoremap <C-k> <C-w><C-k>
+nnoremap <C-l> <C-w><C-l>
+nnoremap <C-h> <C-w><C-h>
+
 set incsearch
 
 set hlsearch
@@ -17,7 +28,14 @@ set cursorline
 
 set showmatch
 
-set smarttab
+" set smarttab
+filetype plugin indent on
+" show existing tab with 4 space width
+set tabstop=2
+" when indenting with '>' use 2 spaces
+set shiftwidth=2
+" Tab inserts 2 spaces
+set expandtab
 
 set number
 setlocal numberwidth=5
@@ -40,7 +58,15 @@ let g:fuzzy_path_display = 'relative_path'
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
-map <C-g> :tabp<CR>
-map <C-h> :tabn<CR>
+" map <C-g> :tabp<CR>
+" map <C-h> :tabn<CR>
 map <C-n> :tabnew<CR>
 map <C-t> :NERDTreeToggle<CR>
+let NERDTreeShowHidden=1
+let NERDTreeIgnore = ['\.swp$']
+
+" Run checktime in buffers, but avoiding the "Command Line" (q:) window
+" au CursorHold * if getcmdwintype() == '' | checktime | endif
+
+map <F2> :mksession! ~/.vim_session <cr> " Write a session to file
+map <F3> :source ~/.vim_session <cr>     " Restore that session
