@@ -2,6 +2,10 @@ let mapleader="\<cr>"
 
 call pathogen#infect()
 
+" Make Vim show Unite by default
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | execute "Unite -start-insert -no-split file_rec" | endif
+
 scriptencoding utf-8
 
 colorscheme Tomorrow-Night
@@ -55,8 +59,6 @@ let g:fuzzy_ceiling=20000
 " l/jeweler.rb)
 let g:fuzzy_path_display = 'relative_path'
 
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
 " map <C-g> :tabp<CR>
 " map <C-h> :tabn<CR>
@@ -70,3 +72,6 @@ let NERDTreeIgnore = ['\.swp$']
 
 map <F2> :mksession! ~/.vim_session <cr> " Write a session to file
 map <F3> :source ~/.vim_session <cr>     " Restore that session
+
+nnoremap <C-p> :Unite -start-insert file_rec/async<cr>
+nnoremap <C-b> :Unite -start-insert buffer<cr>
