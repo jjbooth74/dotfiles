@@ -2,9 +2,9 @@ let mapleader="\<cr>"
 
 call pathogen#infect()
 
-" Make Vim show Unite by default
+" Make Vim show NERDTree on startup
 autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | execute "Unite -start-insert -no-split file_rec" | endif
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif " execute "Unite -start-insert -no-split file_rec" | endif
 
 scriptencoding utf-8
 
@@ -73,5 +73,9 @@ let NERDTreeIgnore = ['\.swp$']
 map <F2> :mksession! ~/.vim_session <cr> " Write a session to file
 map <F3> :source ~/.vim_session <cr>     " Restore that session
 
+" Configure Unite
+call unite#filters#matcher_default#use(['matcher_fuzzy'])
+call unite#filters#sorter_default#use(['sorter_rank'])
+call unite#custom#source('file_rec', 'ignore_pattern', 'coverage/')
 nnoremap <C-p> :Unite -start-insert file_rec/async<cr>
 nnoremap <C-b> :Unite -start-insert buffer<cr>
