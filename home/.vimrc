@@ -79,3 +79,10 @@ call unite#filters#sorter_default#use(['sorter_rank'])
 call unite#custom#source('file_rec', 'ignore_pattern', 'coverage/')
 nnoremap <C-p> :Unite -start-insert file_rec/async<cr>
 nnoremap <C-b> :Unite -start-insert buffer<cr>
+
+
+" Syntastic
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
