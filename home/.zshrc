@@ -1,11 +1,13 @@
-# Path to your oh-my-zsh installation.
-export ZSH=/Users/joshuabooth/.oh-my-zsh
+# If you come from bash you might have to change your $PATH.
+export PATH=$HOME/bin:/usr/local/bin:$PATH
 
-# Set name of the theme to load.
-# Look in ~/.oh-my-zsh/themes/
-# Optionally, if you set this to "random", it'll load a random theme each
-# time that oh-my-zsh is loaded.
-ZSH_THEME="avit"
+# Path to your oh-my-zsh installation.
+export ZSH=/Users/jbooth/.oh-my-zsh
+
+# Set name of the theme to load. Optionally, if you set this to "random"
+# it'll load a random theme each time that oh-my-zsh is loaded.
+# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
+ZSH_THEME="amuse"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -51,12 +53,11 @@ ZSH_THEME="avit"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git brew ruby gem bundler rails osx rake git-extras npm )
 
+source $ZSH/oh-my-zsh.sh
+
 # User configuration
 
-export PATH="/Users/joshuabooth/.rvm/gems/ruby-2.0.0-p576/bin:/Users/joshuabooth/.rvm/gems/ruby-2.0.0-p576@global/bin:/Users/joshuabooth/.rvm/rubies/ruby-2.0.0-p576/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/joshuabooth/.rvm/bin:/Users/joshuabooth/.rvm/bin"
 # export MANPATH="/usr/local/man:$MANPATH"
-
-source $ZSH/oh-my-zsh.sh
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
@@ -84,3 +85,10 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 source ~/.alias
+
+# RBENV setup
+eval "$(rbenv init -)"
+
+# NVM setup
+export NVM_DIR="/Users/jbooth/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
