@@ -8,11 +8,11 @@ autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif " ex
 
 scriptencoding utf-8
 
+colorscheme Tomorrow-Night
 if filereadable(expand("~/.vimrc_background"))
   let base16colorspace=256
   source ~/.vimrc_background
 endif
-colorscheme base16-default-dark
 
 set nocompatible
 syntax on
