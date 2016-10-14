@@ -92,3 +92,7 @@ eval "$(rbenv init -)"
 # NVM setup
 export NVM_DIR="/Users/jbooth/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+
+BASE16_SHELL=$HOME/.config/base16-shell/
+[ -n "$PS1" ] && $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
+base16_tomorrow-night
