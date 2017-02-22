@@ -15,6 +15,7 @@ COMPLETION_WAITING_DOTS="true"
 source $ZSH/oh-my-zsh.sh
 
 export EDITOR='vim'
+export POWERLINE="$(pip show powerline-status | grep Location: | sed -e 's/^Location: //')"
 
 source ~/.alias
 
