@@ -2,11 +2,21 @@ let mapleader=","
 
 " PLUG {{
 call plug#begin('~/.vim/plugged')
-  Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+  Plug 'flazz/vim-colorschemes'
+
+  Plug 'junegunn/fzf', { 'dir': '/usr/local/opt/fzf', 'do': './install --all' }
+  Plug 'junegunn/fzf.vim'
+
+  Plug 'tpope/vim-surround'
+
+  Plug 'vim-syntastic/syntastic'
+  Plug 'scrooloose/nerdtree'
+
+  Plug 'vimwiki/vimwiki'
 call plug#end()
 " }}
 
-call pathogen#infect()
+" call pathogen#infect()
 
 " Make Vim show NERDTree on startup
 autocmd StdinReadPre * let s:std_in=1
@@ -14,7 +24,7 @@ autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif " ex
 
 scriptencoding utf-8
 
-colorscheme Tomorrow-Night
+colorscheme Tomorrow-Night-Eighties
 
 
 " KEYS {{
@@ -23,6 +33,8 @@ colorscheme Tomorrow-Night
   " Use k & j to move lines up and down
   nnoremap <leader>j :m+<cr>
   nnoremap <leader>k :m-2<cr>
+
+  nnoremap <C-p> :FZF<cr>
 " }} KEYS
 
 
@@ -91,39 +103,6 @@ colorscheme Tomorrow-Night
   let NERDTreeIgnore = ['\.swp$']
  " }} NERDTREE
 
-
-" UNITE {{
-  call unite#filters#matcher_default#use(['matcher_fuzzy'])
-  call unite#filters#sorter_default#use(['sorter_rank'])
-  call unite#custom_source('file_rec,file_rec/async,file_mru,file,buffer,grep',
-        \ 'ignore_pattern', join([
-        \ '\.git/',
-        \ '\.bundler/',
-        \ '\.cache/',
-        \ '\.vendor/',
-        \ '\.log',
-        \ '\.vagrant',
-        \ 'node_modules/',
-        \ ], '\|'))
-
-  if executable('ag')
-    set grepprg=ag\ --nogroup\ --column\ --smart-case\ --nocolor\ --follow
-    set grepformat=%f:%l:%C:%m
-    let g:unite_source_grep_command='ag'
-    let g:unite_source_rec_async_command = 
-      \ ['ag', '--follow', '--nocolor', '--nogroup',
-      \  '--hidden', '--ignore', '.git', '-g', '']
-  endif
-
-  function! s:unite_settings()
-    nmap <buffer> Q <plug>(unite_exit)
-    nmap <buffer> <esc> <plug>(unite_exit)
-  endfunction
-  autocmd FileType unite call s:unite_settings()
-
-  nnoremap <C-p> :Unite -start-insert file_rec/async<cr>
-  nnoremap <C-b> :Unite -start-insert buffer<cr>
-" }} UNITE
 
 " SYNTASTIC {{
   " set statusline+=%#warningmsg#
