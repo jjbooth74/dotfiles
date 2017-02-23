@@ -34,3 +34,6 @@ export NVM_DIR="/Users/jbooth/.nvm"
 
 # FUZZYFIND
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# TMUXINATOR
+source ~/.bin/tmuxinator.zsh

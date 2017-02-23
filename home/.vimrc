@@ -1,26 +1,31 @@
 let mapleader=","
 
 " PLUG {{
-call plug#begin('~/.vim/plugged')
-  Plug 'flazz/vim-colorschemes'
+  call plug#begin('~/.vim/plugged')
+    Plug 'flazz/vim-colorschemes'
 
-  Plug 'junegunn/fzf', { 'dir': '/usr/local/opt/fzf', 'do': './install --all' }
-  Plug 'junegunn/fzf.vim'
+    Plug 'junegunn/fzf', { 'dir': '/usr/local/opt/fzf', 'do': './install --all' }
+    Plug 'junegunn/fzf.vim'
 
-  Plug 'tpope/vim-surround'
+    Plug 'tpope/vim-surround'
 
-  Plug 'vim-syntastic/syntastic'
-  Plug 'scrooloose/nerdtree'
+    Plug 'vim-syntastic/syntastic'
+    Plug 'scrooloose/nerdtree'
 
-  Plug 'vimwiki/vimwiki'
-call plug#end()
+    Plug 'vimwiki/vimwiki'
+
+    Plug 'jreybert/vimagit', { 'on': ['Magit'] }
+
+    Plug 'christoomey/vim-tmux-navigator'
+  call plug#end()
 " }}
 
-" call pathogen#infect()
 
-" Make Vim show NERDTree on startup
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif " execute "Unite -start-insert -no-split file_rec" | endif
+" NERDTREE {{
+  " Make Vim show NERDTree on startup
+  autocmd StdinReadPre * let s:std_in=1
+  autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif " execute "Unite -start-insert -no-split file_rec" | endif
+" }}
 
 scriptencoding utf-8
 
@@ -109,8 +114,6 @@ colorscheme Tomorrow-Night-Eighties
   " set statusline+=%{SyntasticStatuslineFlag()}
   " set statusline+=%*
 
-  let g:syntastic_javascript_checkers = ["eslint"]
-  let g:syntastic_javascript_eslint_exec = 'eslint-project-relative'
   let g:syntastic_always_populate_loc_list = 1
   let g:syntastic_auto_loc_list = 0
   let g:syntastic_check_on_open = 1
@@ -125,6 +128,13 @@ colorscheme Tomorrow-Night-Eighties
   highlight link SyntasticWarningSign SignColumn
   highlight link SyntasticStyleErrorSign SignColumn
   highlight link SyntasticStyleWarningSign SignColumn
+
+  " JS
+  let g:syntastic_javascript_checkers = ["eslint"]
+  let g:syntastic_javascript_eslint_exec = 'eslint-project-relative'
+
+  " RUBY
+  let g:syntastic_ruby_checkers = ["mri", "rubocop"]
 " }} SYNTASTIC
 
 
