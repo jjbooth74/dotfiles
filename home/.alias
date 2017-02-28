@@ -8,6 +8,7 @@ compctl -/ -W ~/Development dev
 devo() { dev $1; atom .; }
 compctl -/ -W ~/Development devo
 path() { old=$IFS; IFS=:; printf "%s\n" $PATH; IFS=$old; }
+alias pg="ps ax | grep"
 
 #profile:
 alias profile="$EDITOR ~/.zshrc"
