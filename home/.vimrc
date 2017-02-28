@@ -1,4 +1,4 @@
-let mapleader=","
+let mapleader="\<cr>"
 
 " PLUG {{
   call plug#begin('~/.vim/plugged')
@@ -17,6 +17,15 @@ let mapleader=","
     Plug 'jreybert/vimagit', { 'on': ['Magit'] }
 
     Plug 'christoomey/vim-tmux-navigator'
+
+    Plug 'vim-scripts/dbext.vim'
+ 
+    Plug 'vim-scripts/ruby-matchit'
+    Plug 'kana/vim-textobj-user'
+    Plug 'nelstrom/vim-textobj-rubyblock'
+
+    Plug 'cskeeters/vim-smooth-scroll'
+    Plug 'craigemery/vim-autotag'
   call plug#end()
 " }}
 
@@ -29,19 +38,31 @@ let mapleader=","
 
 scriptencoding utf-8
 
-colorscheme Tomorrow-Night-Eighties
+colorscheme Tomorrow-Night-Bright
 
+" FZF {{
+  let g:fzf_command_prefix = 'Fzf'
+  nnoremap <C-p> :FzfGFiles<cr>
+  nnoremap <C-b> :FzfBuffers<cr>
+" }}
 
 " KEYS {{
-  " LEADER = ,
+  " LEADER = <cr>
  
-  " Use k & j to move lines up and down
+  " Use <leader> k & j to move lines up and down
   nnoremap <leader>j :m+<cr>
   nnoremap <leader>k :m-2<cr>
 
-  nnoremap <C-p> :FZF<cr>
-" }} KEYS
+  " Toggle linting
+  nmap <leader>r :SyntasticToggleMode<cr>
 
+  " Stupid git
+  nnoremap <leader>gg :tabe<cr>:Magit<cr><C-w><C-h>:close<cr>
+" }}
+
+" SMOOTH-SCROLL {{
+  let g:ms_per_line = 15
+" }}
 
 " POWERLINE {{
   set laststatus=2
@@ -68,6 +89,7 @@ colorscheme Tomorrow-Night-Eighties
 " }} SPLITS
 
 " VIM {{
+  set clipboard=unnamed
   set nocompatible
   syntax on
   set incsearch
@@ -116,12 +138,12 @@ colorscheme Tomorrow-Night-Eighties
 
   let g:syntastic_always_populate_loc_list = 1
   let g:syntastic_auto_loc_list = 0
-  let g:syntastic_check_on_open = 1
+  let g:syntastic_check_on_open = 0
   let g:syntastic_check_on_wq = 0
 
   let g:syntastic_error_symbol = '❌'
-  let g:syntastic_style_error_symbol = '⁉️'
   let g:syntastic_warning_symbol = '⚠️'
+  let g:syntastic_style_error_symbol = '⁉️'
   let g:syntastic_style_warning_symbol = '💩'
 
   highlight link SyntasticErrorSign SignColumn
@@ -149,3 +171,7 @@ colorscheme Tomorrow-Night-Eighties
     let &t_EI = "\<Esc>]50;CursorShape=0\x7"
   endif
 " }} CURSOR
+
+" DBEXT {{
+  let g:dbext_default_profile_local = 'type=ODBC:user=sa:passwd=!1somethinglong:dsnname=local'
+" }}
