@@ -1,0 +1,43 @@
+= Hello? =
+
+1. [[Scheduler]]
+3. [[Sherlock]]
+4. [[Backups]]
+
+
+= MUX CHEAT! =
+
+1. `-[ : copy-mode
+2. `-w : list-windows
+3. `-d : detach
+4. `-| : split vertically
+5. `-- : split horizontally
+6. `-o : swap panes
+7. `-z : zoom pane
+8. `-<space> : toggle pane layouts
+9. `-` : type `
+10. `-k : Kill Pane
+11. C-hjkl : move panes
+12. `-[ : scroll mode
+
+
+= WIKI CHEAT! =
+== Keys ==
+  1. gll : increase list depth
+  2. gLl : increase list depth + include children
+  3. glh : decrease list depth
+  4. gLh : decrease list depth + include children
+  5. [ ] <C-Space> : add checkbox & toggle state
+  6. gl<space> : remove checkboxes
+
+== Motions ==
+
+  1. ah/ih : around/in heading
+  2. al : list item + children
+  3. il : single list item
+
+= VIM CHEAT =
+  1. 
+
+= Foo =
+
