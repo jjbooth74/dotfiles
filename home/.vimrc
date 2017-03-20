@@ -7,66 +7,81 @@
   set rtp+=/usr/local/opt/fzf
   call plug#begin('~/.vim/plugged')
     " Make VIM more application like
-    Plug 'tpope/vim-sensible'
-    Plug 'junegunn/fzf.vim'
-    Plug 'scrooloose/nerdtree'
-    Plug 'flazz/vim-colorschemes'
-    Plug 'chriskempson/base16-vim'
-    Plug 'guns/xterm-color-table.vim'
-    Plug 'cskeeters/vim-smooth-scroll'
-    Plug 'jceb/vim-editqf'
-    Plug 'nathanaelkane/vim-indent-guides' " adds visual indentation
+    Plug 'tpope/vim-sensible'                    " 'sensible defaults'
+    Plug 'junegunn/fzf.vim'                      " A wrapper to make easy generic fuzzyfinders
+    Plug 'scrooloose/nerdtree'                   " File tree
+    Plug 'flazz/vim-colorschemes'                " Just a bunch of colors
+    Plug 'chriskempson/base16-vim'               " Fancy colors
+    Plug 'guns/xterm-color-table.vim'            " Debug colors
+    Plug 'cskeeters/vim-smooth-scroll'           " Smooth scrolling
+    Plug 'jceb/vim-editqf'                       " Make quickfind window editable
+    Plug 'nathanaelkane/vim-indent-guides'       " adds vertical bars to track indentation
 
     " Text manipulation
-    Plug 'tpope/vim-surround'
-    Plug 'tpope/vim-commentary'
-    Plug 'junegunn/vim-easy-align'
-    Plug 'michaeljsmith/vim-indent-object' " creates ii/ai/aI text objects
+    Plug 'tpope/vim-surround'                    " Change surround characters e.g. cs[(
+    Plug 'tpope/vim-commentary'                  " Use gc to comment text objects
+    Plug 'junegunn/vim-easy-align'               " Use ga to align blocks of text
+    Plug 'michaeljsmith/vim-indent-object'       " creates ii/ai/aI text objects
 
     " Language Support
-    Plug 'vim-syntastic/syntastic'
-    Plug 'kana/vim-textobj-user'
-    Plug 'nelstrom/vim-textobj-rubyblock'
-    Plug 'kchmck/vim-coffee-script'
-    Plug 'mustache/vim-mustache-handlebars'
-    Plug 'shmup/vim-sql-syntax'
+    Plug 'vim-syntastic/syntastic'               " Support for linting
+    Plug 'kana/vim-textobj-user'                 " Make creating text objects easier
+    Plug 'nelstrom/vim-textobj-rubyblock'        " `r` Text object for ruby blocks
+    Plug 'kchmck/vim-coffee-script'              " Coffeescript language support
+    Plug 'mustache/vim-mustache-handlebars'      " Mustache syntax
+    Plug 'shmup/vim-sql-syntax'                  " SQL Syntax
 
     " IDE
-    Plug 'craigemery/vim-autotag'
-    Plug 'majutsushi/tagbar'
+    Plug 'craigemery/vim-autotag'                " Automatically update tag files
+    Plug 'majutsushi/tagbar'                     " Show a tag-based outline
+    Plug 'ervandew/supertab'                     " Use tab to autocomplete things
 
     " Applications in and of themselves
-    Plug 'vimwiki/vimwiki'
-    Plug 'jreybert/vimagit', { 'on': ['Magit'] }
+    Plug 'vimwiki/vimwiki'                       " Note taking app
+    Plug 'jreybert/vimagit', { 'on': ['Magit'] } " Git app
 
     " Tmux
-    Plug 'christoomey/vim-tmux-navigator'
+    Plug 'christoomey/vim-tmux-navigator'        " Make pane nav seamless within tmux
   call plug#end()
 " }}}
 
 " COLORS {{{
   " let base16colorspace=256
   " colorscheme Tomorrow-Night-Bright
-  if filereadable(expand("~/.vimrc_background"))
+  if filereadable(expand('~/.vimrc_background'))
     let base16colorspace=256
     source ~/.vimrc_background
+  else
+    colorscheme Tomorrow-Night-Bright
   endif
 " }}}
 
 " FZF {{{
   let g:fzf_command_prefix = 'Fzf'
-  nnoremap <C-p> :FzfGFiles<cr>
-  nnoremap <C-b> :FzfBuffers<cr>
-  nnoremap <leader>ag :FzfAg 
-  nnoremap <leader>af :QfAg 
+  nnoremap <C-p>      :FzfGFiles<cr>
+  nnoremap <C-b>      :FzfBuffers<cr>
+  nnoremap <leader>ag :FzfAg
+  nnoremap <leader>af :QfAg
 " }}}
 
 " KEYS {{{
   " LEADER = <cr>
+  " RESERVED:
+  " Vim appears to store bindings in a tree,
+  " debouncing input w/a delay at any inner node.
+  " For certain bindings this is a pain because that
+  " delay is noticeable, e.g. for changing tabs.
+  " The best way to avoid that delay while still having a
+  " usable debounce for other inputs is by ensuring
+  " 'important' bindings are leaf nodes.  The following
+  " should always be leaves:
+  " <leader>t - next tab
+  " <leader>T - prev tab
+  " <leader>x - close tab
  
   " Use <leader> k & j to move lines up and down
-  nnoremap <leader>j :m+<cr>
-  nnoremap <leader>k :m-2<cr>
+  " nnoremap <leader>j :m+<cr>
+  " nnoremap <leader>k :m-2<cr>
 
   " Toggle linting
   nnoremap <leader>r :SyntasticToggleMode<cr>
@@ -74,14 +89,14 @@
   " Magit opens in a split-right pane.
   " This creates a new blank tab, opens Magit,
   " then closes the left split
-  nnoremap <leader>gg :tabe<cr>:Magit<cr><C-w><C-h>:close<cr>
+  nnoremap <leader>git :tabe<cr>:Magit<cr><C-w><C-h>:close<cr>
 
   " Start interactive easy align in visual mode (vipga)
   xmap ga <Plug>(EasyAlign)
   " Start interactive EasyAlign for a motion/text object (gaip)
   nmap ga <Plug>(EasyAlign)
 
-  nnoremap <leader>tag :TagbarToggle<cr>
+  nnoremap <leader>z :TagbarToggle<cr>
 " }}}
 
 " TAB NAV {{{
@@ -95,8 +110,8 @@
   function! Move_tab_or_buffer(direction)
     execute TabOrBuffer() . a:direction
   endfunction
-  command! NextFile call Move_tab_or_buffer("n")
-  command! PrevFile call Move_tab_or_buffer("p")
+  command! NextFile call Move_tab_or_buffer('n')
+  command! PrevFile call Move_tab_or_buffer('p')
 
   function! Close_tab_or_buffer()
     execute TabOrBuffer('tabclose', 'bd')
@@ -119,6 +134,27 @@
   nnoremap <leader>7 :call SelectBufferOrTab(7)<cr>
   nnoremap <leader>8 :call SelectBufferOrTab(8)<cr>
   nnoremap <leader>9 :call SelectBufferOrTab(9)<cr>
+  nnoremap <leader>10 :call SelectBufferOrTab(10)<cr>
+  nnoremap <leader>11 :call SelectBufferOrTab(11)<cr>
+  nnoremap <leader>12 :call SelectBufferOrTab(12)<cr>
+  nnoremap <leader>13 :call SelectBufferOrTab(13)<cr>
+  nnoremap <leader>14 :call SelectBufferOrTab(14)<cr>
+  nnoremap <leader>15 :call SelectBufferOrTab(15)<cr>
+  nnoremap <leader>16 :call SelectBufferOrTab(16)<cr>
+  nnoremap <leader>17 :call SelectBufferOrTab(17)<cr>
+  nnoremap <leader>18 :call SelectBufferOrTab(18)<cr>
+  nnoremap <leader>19 :call SelectBufferOrTab(19)<cr>
+  nnoremap <leader>20 :call SelectBufferOrTab(20)<cr>
+  nnoremap <leader>21 :call SelectBufferOrTab(21)<cr>
+  nnoremap <leader>22 :call SelectBufferOrTab(22)<cr>
+  nnoremap <leader>23 :call SelectBufferOrTab(23)<cr>
+  nnoremap <leader>24 :call SelectBufferOrTab(24)<cr>
+  nnoremap <leader>25 :call SelectBufferOrTab(25)<cr>
+  nnoremap <leader>26 :call SelectBufferOrTab(26)<cr>
+  nnoremap <leader>27 :call SelectBufferOrTab(27)<cr>
+  nnoremap <leader>28 :call SelectBufferOrTab(28)<cr>
+  nnoremap <leader>29 :call SelectBufferOrTab(29)<cr>
+  nnoremap <leader>30 :call SelectBufferOrTab(30)<cr>
 " }}}
 
 " SMOOTH-SCROLL {{{
@@ -151,7 +187,7 @@
 " }}} SPLITS
 
 " GENERAL {{{
-  set listchars=eol:¬,tab:>·,trail:~,extends:>,precedes:< ",space:·
+  set listchars=eol:¬,tab:>·,trail:~,extends:>,precedes:<
   set list
   set clipboard=unnamed
   set cursorline
@@ -168,15 +204,11 @@
 " }}}
 
 " FUZZYFIND {{{
-  " limit number of results shown for performance
-  let g:fuzzy_matching_limit=60
+  let g:fuzzy_matching_limit = 60 " limit number of results shown for performance
   " ignore stuff that can't be openned, and generated files
-  let g:fuzzy_ignore = "*.png;*.PNG;*.JPG;*.jpg;*.GIF;*.gif;*.beam;vendor/**;node_modules/**;coverage/**;tmp/**;rdoc/**"
-  " increate the number of files scanned for very large projects
-  let g:fuzzy_ceiling=20000
-  " display relative path, instead of abbrevated path (lib/jeweler.rb vs
-  " l/jeweler.rb)
-  let g:fuzzy_path_display = 'relative_path'
+  let g:fuzzy_ignore         = '*.png;*.PNG;*.JPG;*.jpg;*.GIF;*.gif;*.beam;vendor/**;node_modules/**;coverage/**;tmp/**;rdoc/**'
+  let g:fuzzy_ceiling        = 20000 " Scan more files
+  let g:fuzzy_path_display   = 'relative_path' " Display relative path
 " }}} FUZZYFIND
 
 " NERDTREE {{{
