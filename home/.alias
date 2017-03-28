@@ -5,8 +5,6 @@ alias ..="cd .."
 alias up="clear;cd ..;pwd;ls -FG"
 dev() { cd ~/Development/$1;clear;printf '\n';pwd;printf '\n';git status; }
 compctl -/ -W ~/Development dev
-devo() { dev $1; atom .; }
-compctl -/ -W ~/Development devo
 path() { old=$IFS; IFS=:; printf "%s\n" $PATH; IFS=$old; }
 alias pg="ps ax | grep"
 
@@ -22,3 +20,6 @@ alias master="git checkout master"
 #ruby:
 alias rd="RAILS_ENVIRONMENT=development"
 alias be="bundle exec"
+
+#colors:
+alias reset_base16="source ~/.base16.zsh"

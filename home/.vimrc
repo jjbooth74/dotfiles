@@ -1,6 +1,7 @@
 " BASICS {{{
   let mapleader="\<cr>"
   scriptencoding utf-8
+  set mouse=a
 " }}}
 
 " PLUG {{{
@@ -46,8 +47,13 @@
 " }}}
 
 " COLORS {{{
-  " let base16colorspace=256
-  " colorscheme Tomorrow-Night-Bright
+  " Change the color of listchars and line break characters
+  augroup UpdateSpecialCharColors
+    autocmd!
+    autocmd ColorScheme * highlight SpecialKey ctermfg=238
+    autocmd ColorScheme * highlight NonText ctermfg=238
+  augroup END
+
   if filereadable(expand('~/.vimrc_background'))
     let base16colorspace=256
     source ~/.vimrc_background
@@ -60,8 +66,8 @@
   let g:fzf_command_prefix = 'Fzf'
   nnoremap <C-p>      :FzfGFiles<cr>
   nnoremap <C-b>      :FzfBuffers<cr>
-  nnoremap <leader>ag :FzfAg
-  nnoremap <leader>af :QfAg
+  nnoremap <leader>ag :FzfAg 
+  nnoremap <leader>af :QfAg 
 " }}}
 
 " KEYS {{{
@@ -86,6 +92,9 @@
   " Toggle linting
   nnoremap <leader>r :SyntasticToggleMode<cr>
 
+  " Reset colors
+  nnoremap <leader>cr :silent ! source ~/.base16_theme<cr>:redraw!<cr>
+
   " Magit opens in a split-right pane.
   " This creates a new blank tab, opens Magit,
   " then closes the left split
@@ -97,6 +106,7 @@
   nmap ga <Plug>(EasyAlign)
 
   nnoremap <leader>z :TagbarToggle<cr>
+  nnoremap <leader>l :noh<cr>
 " }}}
 
 " TAB NAV {{{
@@ -187,7 +197,7 @@
 " }}} SPLITS
 
 " GENERAL {{{
-  set listchars=eol:¬,tab:>·,trail:~,extends:>,precedes:<
+  set listchars=eol:¬,tab:»\ ,trail:~,extends:>,precedes:<
   set list
   set clipboard=unnamed
   set cursorline

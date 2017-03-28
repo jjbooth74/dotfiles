@@ -10,7 +10,7 @@ ZSH_THEME="amuse"
 COMPLETION_WAITING_DOTS="true"
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-# plugins=(git brew ruby gem bundler rails osx rake git-extras npm )
+plugins=(git brew ruby gem bundler rails osx rake git-extras npm tmux)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -26,17 +26,14 @@ eval "$(rbenv init -)"
 export NVM_DIR="/Users/jbooth/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 
-# Make it possible to use base16 color schemes which is nifty.
-# Unfortunately this overwrites iterm's profile settings so gotta figure that out someday.
-BASE16_SHELL=$HOME/.config/base16-shell/
-[ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
-base16_ocean # command to generate ~/.vim_background for the right colorscheme.
-
 # FUZZYFIND
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+# BASE16
+[ -f ~/.base16.zsh ] && source ~/.base16.zsh
+
 # TMUXINATOR
-source ~/.bin/tmuxinator.zsh
+[ -f ~/.bin/tmuxinator.zsh ] && source ~/.bin/tmuxinator.zsh
 
 PATH="/Users/jbooth/perl5/bin${PATH:+:${PATH}}"; export PATH;
 PERL5LIB="/Users/jbooth/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;

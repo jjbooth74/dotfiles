@@ -10,9 +10,9 @@
 	<integer>1</integer>
 	<key>Coprocess MRU</key>
 	<array>
-		<string>~/.vim/plugged/vim-iterm2-navigator/switch.py l</string>
 		<string>~/.vim/plugged/vim-iterm2-navigator/switch.py j</string>
 		<string>~/.vim/plugged/vim-iterm2-navigator/switch.py k</string>
+		<string>~/.vim/plugged/vim-iterm2-navigator/switch.py l</string>
 	</array>
 	<key>Custom Color Presets</key>
 	<dict>
@@ -36296,6 +36296,69 @@
 			<key>Text</key>
 			<string></string>
 		</dict>
+		<key>0x31-0x100000</key>
+		<dict>
+			<key>Action</key>
+			<integer>12</integer>
+			<key>Text</key>
+			<string>`1</string>
+		</dict>
+		<key>0x32-0x100000</key>
+		<dict>
+			<key>Action</key>
+			<integer>12</integer>
+			<key>Text</key>
+			<string>`2</string>
+		</dict>
+		<key>0x33-0x100000</key>
+		<dict>
+			<key>Action</key>
+			<integer>12</integer>
+			<key>Text</key>
+			<string>`3</string>
+		</dict>
+		<key>0x34-0x100000</key>
+		<dict>
+			<key>Action</key>
+			<integer>12</integer>
+			<key>Text</key>
+			<string>`4</string>
+		</dict>
+		<key>0x35-0x100000</key>
+		<dict>
+			<key>Action</key>
+			<integer>12</integer>
+			<key>Text</key>
+			<string>`5</string>
+		</dict>
+		<key>0x36-0x100000</key>
+		<dict>
+			<key>Action</key>
+			<integer>12</integer>
+			<key>Text</key>
+			<string>`6</string>
+		</dict>
+		<key>0x37-0x100000</key>
+		<dict>
+			<key>Action</key>
+			<integer>12</integer>
+			<key>Text</key>
+			<string>`7</string>
+		</dict>
+		<key>0x38-0x100000</key>
+		<dict>
+			<key>Action</key>
+			<integer>12</integer>
+			<key>Text</key>
+			<string>`8</string>
+		</dict>
+		<key>0x39-0x100000</key>
+		<dict>
+			<key>Action</key>
+			<integer>12</integer>
+			<key>Text</key>
+			<string>`9</string>
+		</dict>
 		<key>0x44-0x60000</key>
 		<dict>
 			<key>Action</key>
@@ -36309,13 +36372,6 @@
 			<integer>18</integer>
 			<key>Text</key>
 			<string></string>
-		</dict>
-		<key>0x6a-0x40000</key>
-		<dict>
-			<key>Action</key>
-			<integer>35</integer>
-			<key>Text</key>
-			<string>~/.vim/plugged/vim-iterm2-navigator/switch.py j</string>
 		</dict>
 		<key>0x6a-0x80000</key>
 		<dict>
@@ -36433,7 +36489,7 @@
 	<key>HideTab</key>
 	<true/>
 	<key>JobName</key>
-	<true/>
+	<false/>
 	<key>LoadPrefsFromCustomFolder</key>
 	<true/>
 	<key>NSFontPanelSizeList</key>
@@ -36505,19 +36561,19 @@
 	<key>NSWindow Frame ProfilesPanel</key>
 	<string>103 821 735 382 0 0 3440 1417 </string>
 	<key>NSWindow Frame SUUpdateAlert</key>
-	<string>652 588 620 392 0 0 1920 1177 </string>
+	<string>1412 768 620 392 0 0 3440 1417 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>555 476 796 473 0 0 3440 1417 </string>
+	<string>1075 727 796 473 0 0 3440 1417 </string>
 	<key>NSWindow Frame UKCrashReporter</key>
 	<string>332 833 592 584 0 0 3440 1417 </string>
 	<key>NSWindow Frame com.apple.typography_panel_MenloForPowerline-Regular</key>
 	<string>1073 935 260 68 0 0 3440 1417 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>1154 315 1290 1077 0 0 3440 1417 </string>
+	<string>1154 381 1290 1034 0 0 3440 1417 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>1728 71 1706 1334 0 0 3440 1417 </string>
+	<string>1154 323 1290 1076 0 0 3440 1417 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
-	<string>1728 2 1706 1413 0 0 3440 1417 </string>
+	<string>1728 338 1290 1076 0 0 3440 1417 </string>
 	<key>New Bookmarks</key>
 	<array>
 		<dict>
@@ -37878,7 +37934,7 @@
 			<key>Visual Bell</key>
 			<true/>
 			<key>Window Type</key>
-			<integer>0</integer>
+			<integer>12</integer>
 			<key>Working Directory</key>
 			<string>/Users/jbooth</string>
 		</dict>
@@ -38607,13 +38663,13 @@
 			<key>Use Non-ASCII Font</key>
 			<true/>
 			<key>Use Tab Color</key>
-			<true/>
+			<false/>
 			<key>Vertical Spacing</key>
 			<real>1.1975421216114457</real>
 			<key>Visual Bell</key>
 			<true/>
 			<key>Window Type</key>
-			<integer>0</integer>
+			<integer>12</integer>
 			<key>Working Directory</key>
 			<string>/Users/jbooth</string>
 		</dict>
@@ -38686,27 +38742,33 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2017-03-13T19:49:57Z</date>
+	<date>2017-03-27T20:42:47Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>ShowBookmarkName</key>
 	<false/>
 	<key>ShowPaneTitles</key>
-	<false/>
+	<true/>
 	<key>SplitPaneDimmingAmount</key>
 	<real>0.24798177083333336</real>
 	<key>SwitchPaneModifier</key>
 	<integer>5</integer>
+	<key>SwitchTabModifier</key>
+	<integer>9</integer>
+	<key>SwitchWindowModifier</key>
+	<integer>6</integer>
 	<key>TabStyle</key>
-	<integer>1</integer>
+	<integer>3</integer>
 	<key>TabViewType</key>
-	<integer>1</integer>
+	<integer>0</integer>
 	<key>UKCrashReporterLastCrashReportDate</key>
 	<real>1487951104</real>
 	<key>UseBorder</key>
 	<false/>
 	<key>Window Arrangements</key>
 	<dict/>
+	<key>WindowNumber</key>
+	<true/>
 	<key>WordCharacters</key>
 	<string>/-+\~_.</string>
 	<key>iTerm Version</key>
