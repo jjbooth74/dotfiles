@@ -9,6 +9,7 @@
   call plug#begin('~/.vim/plugged')
     " Make VIM more application like
     Plug 'tpope/vim-sensible'                    " 'sensible defaults'
+    Plug 'tpope/vim-obsession'                   " Autosave sessions
     Plug 'junegunn/fzf.vim'                      " A wrapper to make easy generic fuzzyfinders
     Plug 'scrooloose/nerdtree'                   " File tree
     Plug 'flazz/vim-colorschemes'                " Just a bunch of colors
