@@ -1,6 +1,5 @@
 " BASICS {{{
   let mapleader="\<cr>"
-  scriptencoding utf-8
   set mouse=a
 " }}}
 
@@ -10,6 +9,7 @@
     " Make VIM more application like
     Plug 'tpope/vim-sensible'                    " 'sensible defaults'
     Plug 'tpope/vim-obsession'                   " Autosave sessions
+    Plug 'tpope/vim-fugitive'                    " A git app
     Plug 'junegunn/fzf.vim'                      " A wrapper to make easy generic fuzzyfinders
     Plug 'scrooloose/nerdtree'                   " File tree
     Plug 'flazz/vim-colorschemes'                " Just a bunch of colors
@@ -17,7 +17,8 @@
     Plug 'guns/xterm-color-table.vim'            " Debug colors
     Plug 'cskeeters/vim-smooth-scroll'           " Smooth scrolling
     Plug 'jceb/vim-editqf'                       " Make quickfind window editable
-    Plug 'nathanaelkane/vim-indent-guides'       " adds vertical bars to track indentation
+    " Plug 'nathanaelkane/vim-indent-guides'       " adds vertical bars to track indentation
+    Plug 'Yggdroot/indentLine'                   " indents + leading spaces
 
     " Text manipulation
     Plug 'tpope/vim-surround'                    " Change surround characters e.g. cs[(
@@ -29,6 +30,9 @@
     Plug 'vim-syntastic/syntastic'               " Support for linting
     Plug 'kana/vim-textobj-user'                 " Make creating text objects easier
     Plug 'nelstrom/vim-textobj-rubyblock'        " `r` Text object for ruby blocks
+    Plug 'pangloss/vim-javascript'               " JS support
+    Plug 'maxmellon/vim-jsx-pretty'              " JSX support
+    Plug 'isRuslan/vim-es6'
     Plug 'kchmck/vim-coffee-script'              " Coffeescript language support
     Plug 'mustache/vim-mustache-handlebars'      " Mustache syntax
     Plug 'shmup/vim-sql-syntax'                  " SQL Syntax
@@ -51,8 +55,8 @@
   " Change the color of listchars and line break characters
   augroup UpdateSpecialCharColors
     autocmd!
-    autocmd ColorScheme * highlight SpecialKey ctermfg=238
-    autocmd ColorScheme * highlight NonText ctermfg=238
+    autocmd ColorScheme * highlight SpecialKey ctermfg=18
+    autocmd ColorScheme * highlight NonText ctermfg=18
   augroup END
 
   if filereadable(expand('~/.vimrc_background'))
@@ -61,6 +65,14 @@
   else
     colorscheme Tomorrow-Night-Bright
   endif
+" }}}
+
+" INDENTATION {{{
+  let g:indentLine_char = '┆'
+  let g:indentLine_leadingSpaceChar = '·'
+  let g:indentLine_leadingSpaceEnabled = 1
+  let g:indentLine_setColors = 1
+  let g:indentLine_color_term = 18
 " }}}
 
 " FZF {{{
@@ -90,6 +102,9 @@
   " nnoremap <leader>j :m+<cr>
   " nnoremap <leader>k :m-2<cr>
 
+  " Reload file from disk
+  nnoremap <leader>e :e %<cr>
+
   " Toggle linting
   nnoremap <leader>r :SyntasticToggleMode<cr>
 
@@ -106,7 +121,8 @@
   " Start interactive EasyAlign for a motion/text object (gaip)
   nmap ga <Plug>(EasyAlign)
 
-  nnoremap <leader>z :TagbarToggle<cr>
+  nnoremap <leader>z :setlocal foldexpr=(getline(v:lnum)=~@/)?0:(getline(v:lnum-1)=~@/)\\|\\|(getline(v:lnum+1)=~@/)?1:2 foldmethod=expr foldlevel=0 foldcolumn=2<CR>
+  nnoremap <leader>m :TagbarToggle<cr>
   nnoremap <leader>l :noh<cr>
 " }}}
 
@@ -242,9 +258,9 @@
   let g:syntastic_check_on_wq = 0
 
   let g:syntastic_error_symbol = '❌'
-  let g:syntastic_warning_symbol = '⚠️'
-  let g:syntastic_style_error_symbol = '⁉️'
-  let g:syntastic_style_warning_symbol = '💩'
+  let g:syntastic_warning_symbol = '😱'
+  let g:syntastic_style_error_symbol = '💩'
+  let g:syntastic_style_warning_symbol = '👎'
 
   highlight link SyntasticErrorSign SignColumn
   highlight link SyntasticWarningSign SignColumn
@@ -252,11 +268,11 @@
   highlight link SyntasticStyleWarningSign SignColumn
 
   " JS
-  let g:syntastic_javascript_checkers = ["eslint"]
-  let g:syntastic_javascript_eslint_exec = 'eslint-project-relative'
+  let g:syntastic_javascript_checkers = ['eslint']
+  let g:syntastic_javascript_eslint_exec = 'eslint_d'
 
   " RUBY
-  let g:syntastic_ruby_checkers = ["mri", "rubocop"]
+  let g:syntastic_ruby_checkers = ['mri', 'rubocop']
 " }}} SYNTASTIC
 
 " INDENT GUIDES {{{

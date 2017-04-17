@@ -13,6 +13,8 @@ COMPLETION_WAITING_DOTS="true"
 plugins=(git brew ruby gem bundler rails osx rake git-extras npm tmux)
 
 source $ZSH/oh-my-zsh.sh
+unsetopt share_history # No.
+setopt no_share_history # Just no.
 
 export EDITOR='vim'
 export POWERLINE="$(pip show powerline-status | grep Location: | sed -e 's/^Location: //')"
@@ -23,8 +25,8 @@ source ~/.alias
 eval "$(rbenv init -)"
 
 # NVM setup
-export NVM_DIR="/Users/jbooth/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+# export NVM_DIR="/Users/jbooth/.nvm"
+# [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 
 # FUZZYFIND
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

@@ -1,3 +1,4 @@
 .netrwhist
 home/vimwiki
+home/.tmux/resurrect/*.txt
 *.wiki
