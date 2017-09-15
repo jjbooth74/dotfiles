@@ -1,4 +1,6 @@
 .netrwhist
 home/vimwiki
 home/.tmux/resurrect/*.txt
+home/.tmux/resurrect/last
+home/.tmux/resurrect/*.tar.gz
 *.wiki
