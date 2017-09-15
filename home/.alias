@@ -13,7 +13,8 @@ alias profile="$EDITOR ~/.zshrc"
 alias aliases="$EDITOR ~/.alias"
 
 #git:
-alias pull="git pull origin"
+alias pull="git pull --ff-only origin"
+alias fetch="git fetch --all"
 alias status="git status"
 alias master="git checkout master"
 
