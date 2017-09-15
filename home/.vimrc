@@ -9,45 +9,57 @@
     " Make VIM more application like
     Plug 'tpope/vim-sensible'                    " 'sensible defaults'
     Plug 'tpope/vim-obsession'                   " Autosave sessions
-    Plug 'tpope/vim-fugitive'                    " A git app
     Plug 'junegunn/fzf.vim'                      " A wrapper to make easy generic fuzzyfinders
     Plug 'scrooloose/nerdtree'                   " File tree
     Plug 'flazz/vim-colorschemes'                " Just a bunch of colors
     Plug 'chriskempson/base16-vim'               " Fancy colors
-    Plug 'guns/xterm-color-table.vim'            " Debug colors
+    " Plug 'guns/xterm-color-table.vim'            " Debug colors
     Plug 'cskeeters/vim-smooth-scroll'           " Smooth scrolling
-    Plug 'jceb/vim-editqf'                       " Make quickfind window editable
-    " Plug 'nathanaelkane/vim-indent-guides'       " adds vertical bars to track indentation
-    Plug 'Yggdroot/indentLine'                   " indents + leading spaces
+    " Plug 'jceb/vim-editqf'                       " Make quickfind window editable
+    " Plug 'Yggdroot/indentLine'                   " indents + leading spaces
+    " Plug 'vim-scripts/BufOnly.vim'               " :BufOnly to close all but current buffer
 
     " Text manipulation
     Plug 'tpope/vim-surround'                    " Change surround characters e.g. cs[(
     Plug 'tpope/vim-commentary'                  " Use gc to comment text objects
-    Plug 'junegunn/vim-easy-align'               " Use ga to align blocks of text
+    " Plug 'junegunn/vim-easy-align'               " Use ga to align blocks of text
     Plug 'michaeljsmith/vim-indent-object'       " creates ii/ai/aI text objects
 
     " Language Support
-    Plug 'vim-syntastic/syntastic'               " Support for linting
-    Plug 'kana/vim-textobj-user'                 " Make creating text objects easier
-    Plug 'nelstrom/vim-textobj-rubyblock'        " `r` Text object for ruby blocks
+    " Plug 'kana/vim-textobj-user'                 " Make creating text objects easier
+    " Plug 'nelstrom/vim-textobj-rubyblock'        " `r` Text object for ruby blocks
     Plug 'pangloss/vim-javascript'               " JS support
     Plug 'maxmellon/vim-jsx-pretty'              " JSX support
     Plug 'isRuslan/vim-es6'
+    Plug 'tpope/vim-rbenv'
+    Plug 'vim-ruby/vim-ruby'                     " Ruby support
     Plug 'kchmck/vim-coffee-script'              " Coffeescript language support
     Plug 'mustache/vim-mustache-handlebars'      " Mustache syntax
     Plug 'shmup/vim-sql-syntax'                  " SQL Syntax
+    Plug 'evanmiller/nginx-vim-syntax'           " nginx syntax
 
     " IDE
+    Plug 'w0rp/ale'                              " Asynchronous Lint Engine
     Plug 'craigemery/vim-autotag'                " Automatically update tag files
     Plug 'majutsushi/tagbar'                     " Show a tag-based outline
     Plug 'ervandew/supertab'                     " Use tab to autocomplete things
 
     " Applications in and of themselves
-    Plug 'vimwiki/vimwiki'                       " Note taking app
-    Plug 'jreybert/vimagit', { 'on': ['Magit'] } " Git app
+    " Plug 'vimwiki/vimwiki'                       " Note taking app
+    " Plug 'jreybert/vimagit', { 'on': ['Magit'] } " Git app
+    Plug 'tpope/vim-fugitive'
+    Plug 'tpope/vim-rhubarb'                     " Github extension for fugitive
 
     " Tmux
     Plug 'christoomey/vim-tmux-navigator'        " Make pane nav seamless within tmux
+
+    " NEOVIM
+    if has('nvim')
+      " Plug 'neomake/neomake'
+      " Plug 'benjie/neomake-local-eslint.vim'
+    else
+      " Plug 'vim-syntastic/syntastic'               " Support for linting
+    endif
   call plug#end()
 " }}}
 
@@ -121,6 +133,7 @@
   " Start interactive EasyAlign for a motion/text object (gaip)
   nmap ga <Plug>(EasyAlign)
 
+  " Fold things.
   nnoremap <leader>z :setlocal foldexpr=(getline(v:lnum)=~@/)?0:(getline(v:lnum-1)=~@/)\\|\\|(getline(v:lnum+1)=~@/)?1:2 foldmethod=expr foldlevel=0 foldcolumn=2<CR>
   nnoremap <leader>m :TagbarToggle<cr>
   nnoremap <leader>l :noh<cr>
@@ -191,11 +204,14 @@
 " POWERLINE {{{
   set laststatus=2
   set showtabline=2
-  python from powerline.vim import setup as powerline_setup
-  python powerline_setup()
-  python del powerline_setup
-  " set guifont=Inconsolata\ for\ Powerline:h15
-  let g:Powerline_symbols = 'fancy'
+
+  if !has('nvim')
+    python from powerline.vim import setup as powerline_setup
+    python powerline_setup()
+    python del powerline_setup
+    " set guifont=Inconsolata\ for\ Powerline:h15
+    let g:Powerline_symbols = 'fancy'
+  endif
   set encoding=utf-8
   set t_Co=256
   set fillchars+=stl:\ ,stlnc:\
@@ -218,6 +234,8 @@
   set list
   set clipboard=unnamed
   set cursorline
+  set colorcolumn=117
+  highlight ColorColumn ctermbg=black
   set hlsearch
   set showmatch
   set tabstop=2
@@ -247,39 +265,64 @@
   autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif " execute "Unite -start-insert -no-split file_rec" | endif
 " }}} NERDTREE
 
+if has('nvim')
+" NEOMAKE {{{
+  let g:neomake_javascript_enabled_makers = ['eslint']
+  autocmd! BufWritePost * Neomake
+  let g:neomake_open_list = 2
+
+  let g:neomake_warning_sign = {
+        \ 'text': '💩',
+        \ 'texthl': 'WarningMsg',
+        \ }
+  let g:neomake_error_sign = {
+        \ 'text': '❌',
+        \ 'texthl': 'ErrorMsg',
+        \ }
+" }}}
+
+else
+
+" ALE {{{
+  let g:ale_sign_column_always = 1
+  let g:ale_sign_error = '👎'
+  let g:ale_sign_warning = '💩'
+  let g:ale_fixers = {
+        \ 'ruby': ['rubocop', 'remove_trailing_lines'],
+        \}
+  let g:ale_fix_on_save = 1
+" }}} ALE
+
 " SYNTASTIC {{{
   " set statusline+=%#warningmsg#
   " set statusline+=%{SyntasticStatuslineFlag()}
   " set statusline+=%*
 
-  let g:syntastic_always_populate_loc_list = 1
-  let g:syntastic_auto_loc_list = 0
-  let g:syntastic_check_on_open = 0
-  let g:syntastic_check_on_wq = 0
+  " let g:syntastic_always_populate_loc_list = 1
+  " let g:syntastic_auto_loc_list = 0
+  " let g:syntastic_check_on_open = 0
+  " let g:syntastic_check_on_wq = 0
 
-  let g:syntastic_error_symbol = '❌'
-  let g:syntastic_warning_symbol = '😱'
-  let g:syntastic_style_error_symbol = '💩'
-  let g:syntastic_style_warning_symbol = '👎'
+  " let g:syntastic_error_symbol = '❌'
+  " let g:syntastic_warning_symbol = '😱'
+  " let g:syntastic_style_error_symbol = '💩'
+  " let g:syntastic_style_warning_symbol = '👎'
 
-  highlight link SyntasticErrorSign SignColumn
-  highlight link SyntasticWarningSign SignColumn
-  highlight link SyntasticStyleErrorSign SignColumn
-  highlight link SyntasticStyleWarningSign SignColumn
+  " highlight link SyntasticErrorSign SignColumn
+  " highlight link SyntasticWarningSign SignColumn
+  " highlight link SyntasticStyleErrorSign SignColumn
+  " highlight link SyntasticStyleWarningSign SignColumn
 
-  " JS
-  let g:syntastic_javascript_checkers = ['eslint']
-  let g:syntastic_javascript_eslint_exec = 'eslint_d'
+  " " JS
+  " let g:syntastic_javascript_checkers = ['eslint']
+  " let g:syntastic_javascript_eslint_exec = 'eslint_d'
 
-  " RUBY
-  let g:syntastic_ruby_checkers = ['mri', 'rubocop']
+  " " RUBY
+  " let g:syntastic_ruby_checkers = ['mri', 'rubocop']
 " }}} SYNTASTIC
 
-" INDENT GUIDES {{{
-  let g:indent_guides_auto_colors = 0
-  autocmd VimEnter,Colorscheme * :hi IndentguidesOdd guibg=red ctermbg=0
-  autocmd VimEnter,Colorscheme * :hi IndentguidesEven guibg=green ctermbg=18
-" }}}
+endif
+
 
 " CURSOR {{{
   " Set the cursor to line in insert mode, but account for TMUX
@@ -331,3 +374,7 @@
   \ 'down':    '50%'
   \ })
 " }}} AG
+
+" JS {{{
+  let g:vim_jsx_pretty_colorful_config = 1
+" }}}
