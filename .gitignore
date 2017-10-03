@@ -1,6 +1,7 @@
 .netrwhist
-home/.config/mopidy/mopidy.conf
+mopidy.conf
 home/vimwiki
+home/.config/mopidy/mopidy.conf
 home/.tmux/resurrect/*.txt
 home/.tmux/resurrect/last
 home/.tmux/resurrect/*.tar.gz
