@@ -16,7 +16,6 @@ unsetopt share_history # No.
 setopt no_share_history # Just no.
 
 export EDITOR='vim'
-export POWERLINE="$(pip show powerline-status | grep Location: | sed -e 's/^Location: //')"
 
 source ~/.alias
 
