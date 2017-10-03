@@ -13,21 +13,16 @@
     Plug 'scrooloose/nerdtree'                   " File tree
     Plug 'flazz/vim-colorschemes'                " Just a bunch of colors
     Plug 'chriskempson/base16-vim'               " Fancy colors
-    " Plug 'guns/xterm-color-table.vim'            " Debug colors
     Plug 'cskeeters/vim-smooth-scroll'           " Smooth scrolling
-    " Plug 'jceb/vim-editqf'                       " Make quickfind window editable
-    " Plug 'Yggdroot/indentLine'                   " indents + leading spaces
-    " Plug 'vim-scripts/BufOnly.vim'               " :BufOnly to close all but current buffer
+    Plug 'vim-airline/vim-airline'
+    Plug 'vim-airline/vim-airline-themes'
 
     " Text manipulation
     Plug 'tpope/vim-surround'                    " Change surround characters e.g. cs[(
     Plug 'tpope/vim-commentary'                  " Use gc to comment text objects
-    " Plug 'junegunn/vim-easy-align'               " Use ga to align blocks of text
     Plug 'michaeljsmith/vim-indent-object'       " creates ii/ai/aI text objects
 
     " Language Support
-    " Plug 'kana/vim-textobj-user'                 " Make creating text objects easier
-    " Plug 'nelstrom/vim-textobj-rubyblock'        " `r` Text object for ruby blocks
     Plug 'pangloss/vim-javascript'               " JS support
     Plug 'maxmellon/vim-jsx-pretty'              " JSX support
     Plug 'isRuslan/vim-es6'
@@ -44,22 +39,17 @@
     Plug 'majutsushi/tagbar'                     " Show a tag-based outline
     Plug 'ervandew/supertab'                     " Use tab to autocomplete things
 
-    " Applications in and of themselves
-    " Plug 'vimwiki/vimwiki'                       " Note taking app
-    " Plug 'jreybert/vimagit', { 'on': ['Magit'] } " Git app
+    " GIT
     Plug 'tpope/vim-fugitive'
     Plug 'tpope/vim-rhubarb'                     " Github extension for fugitive
 
     " Tmux
     Plug 'christoomey/vim-tmux-navigator'        " Make pane nav seamless within tmux
+    Plug 'edkolev/tmuxline.vim'                  " Sync airline -> Tmux status line
 
-    " NEOVIM
-    if has('nvim')
-      " Plug 'neomake/neomake'
-      " Plug 'benjie/neomake-local-eslint.vim'
-    else
-      " Plug 'vim-syntastic/syntastic'               " Support for linting
-    endif
+    " Stupid but glorious
+    Plug 'AndreaOrru/fzf-mopidy-spotify.vim'       " Adds spotify commands
+    Plug 'durgaswaroop/vim-mpc'                    " Adds MPC control
   call plug#end()
 " }}}
 
@@ -84,7 +74,7 @@
   let g:indentLine_leadingSpaceChar = '·'
   let g:indentLine_leadingSpaceEnabled = 1
   let g:indentLine_setColors = 1
-  let g:indentLine_color_term = 18
+  let g:indentLine_color_term = 20
 " }}}
 
 " FZF {{{
@@ -201,23 +191,25 @@
   let g:ms_per_line = 15
 " }}}
 
-" POWERLINE {{{
-  set laststatus=2
-  set showtabline=2
-
-  if !has('nvim')
-    python from powerline.vim import setup as powerline_setup
-    python powerline_setup()
-    python del powerline_setup
-    " set guifont=Inconsolata\ for\ Powerline:h15
-    let g:Powerline_symbols = 'fancy'
-  endif
-  set encoding=utf-8
+" AIRLINE {{{
   set t_Co=256
-  set fillchars+=stl:\ ,stlnc:\
-  " set term=xterm-256color
-  set termencoding=utf-8
-" }}} POWERLINE
+  set encoding=utf-8
+  let g:airline#extensions#tabline#enabled = 1
+  let g:airline#extensions#tabline#left_sep = ' '
+  let g:airline#extensions#tabline#left_alt_sep = '|'
+  let g:airline#extensions#tmuxline#enabled = 0
+  let g:tmuxline_powerline_separators = 0
+  let g:tmuxline_preset = {
+        \'a'    : '#S',
+        \'win'  : ['  #I', '#W  '],
+        \'cwin' : ['  #I', '#W #F  '],
+        \'x'    : '𝄆 #(mpc current) 𝄇',
+        \'y'    : '#(date)',
+        \}
+  let g:airline_theme='base16_eighties'
+  " 'fairyfloss' 'hybrid' 'lucius' 'powerlineish' 'raven' 'ravenpower'+++ 'serene' 'sol'
+  " 'tomorrow' 'understated' 'base16_eighties'
+" }}}
 
 " SPLITS {{{
   set splitbelow
@@ -265,23 +257,6 @@
   autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif " execute "Unite -start-insert -no-split file_rec" | endif
 " }}} NERDTREE
 
-if has('nvim')
-" NEOMAKE {{{
-  let g:neomake_javascript_enabled_makers = ['eslint']
-  autocmd! BufWritePost * Neomake
-  let g:neomake_open_list = 2
-
-  let g:neomake_warning_sign = {
-        \ 'text': '💩',
-        \ 'texthl': 'WarningMsg',
-        \ }
-  let g:neomake_error_sign = {
-        \ 'text': '❌',
-        \ 'texthl': 'ErrorMsg',
-        \ }
-" }}}
-
-else
 
 " ALE {{{
   let g:ale_sign_column_always = 1
@@ -290,39 +265,9 @@ else
   let g:ale_fixers = {
         \ 'ruby': ['rubocop', 'remove_trailing_lines'],
         \}
-  let g:ale_fix_on_save = 1
+  let g:ale_fix_on_save = 0
+  let g:ale_ruby_rubocop_executable = '/Users/jbooth/.rbenv/shims/rubocop'
 " }}} ALE
-
-" SYNTASTIC {{{
-  " set statusline+=%#warningmsg#
-  " set statusline+=%{SyntasticStatuslineFlag()}
-  " set statusline+=%*
-
-  " let g:syntastic_always_populate_loc_list = 1
-  " let g:syntastic_auto_loc_list = 0
-  " let g:syntastic_check_on_open = 0
-  " let g:syntastic_check_on_wq = 0
-
-  " let g:syntastic_error_symbol = '❌'
-  " let g:syntastic_warning_symbol = '😱'
-  " let g:syntastic_style_error_symbol = '💩'
-  " let g:syntastic_style_warning_symbol = '👎'
-
-  " highlight link SyntasticErrorSign SignColumn
-  " highlight link SyntasticWarningSign SignColumn
-  " highlight link SyntasticStyleErrorSign SignColumn
-  " highlight link SyntasticStyleWarningSign SignColumn
-
-  " " JS
-  " let g:syntastic_javascript_checkers = ['eslint']
-  " let g:syntastic_javascript_eslint_exec = 'eslint_d'
-
-  " " RUBY
-  " let g:syntastic_ruby_checkers = ['mri', 'rubocop']
-" }}} SYNTASTIC
-
-endif
-
 
 " CURSOR {{{
   " Set the cursor to line in insert mode, but account for TMUX

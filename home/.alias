@@ -27,3 +27,6 @@ alias reset_base16="source ~/.base16.zsh"
 
 #tmux:
 alias tmux="tmux -u"
+
+#music
+alias music="ncmpcpp"
