@@ -38,6 +38,7 @@
     Plug 'craigemery/vim-autotag'                " Automatically update tag files
     Plug 'majutsushi/tagbar'                     " Show a tag-based outline
     Plug 'ervandew/supertab'                     " Use tab to autocomplete things
+    Plug 'easymotion/vim-easymotion'             " Magic navigation
 
     " GIT
     Plug 'tpope/vim-fugitive'
@@ -234,7 +235,6 @@
   set shiftwidth=2
   set expandtab
   set number
-  set relativenumber
   setlocal numberwidth=5
   set wildmode=list:longest,full
   set nocompatible
