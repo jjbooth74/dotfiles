@@ -31,7 +31,6 @@
     Plug 'kchmck/vim-coffee-script'              " Coffeescript language support
     Plug 'mustache/vim-mustache-handlebars'      " Mustache syntax
     Plug 'shmup/vim-sql-syntax'                  " SQL Syntax
-    Plug 'evanmiller/nginx-vim-syntax'           " nginx syntax
 
     " IDE
     Plug 'w0rp/ale'                              " Asynchronous Lint Engine
