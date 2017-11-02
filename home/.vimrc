@@ -24,6 +24,7 @@
 
     " Language Support
     Plug 'pangloss/vim-javascript'               " JS support
+    Plug 'fatih/vim-go'
     Plug 'maxmellon/vim-jsx-pretty'              " JSX support
     Plug 'isRuslan/vim-es6'
     Plug 'tpope/vim-rbenv'
@@ -263,6 +264,8 @@
   let g:ale_sign_warning = '💩'
   let g:ale_fixers = {
         \ 'ruby': ['rubocop', 'remove_trailing_lines'],
+        \ 'go': ['remove_traling_lines', 'trim_whitespace'],
+        \ 'yaml': ['remove_trailing_lines', 'trim_whitespace']
         \}
   let g:ale_fix_on_save = 0
   let g:ale_ruby_rubocop_executable = '/Users/jbooth/.rbenv/shims/rubocop'
