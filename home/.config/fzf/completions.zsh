@@ -7,7 +7,7 @@ fzf-go-widget() {
   # setopt localoptions pipefail 2> /dev/null
 
   local dir="$(eval "$cmd" | FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} --reverse $FZF_DEFAULT_OPTS $FZF_ALT_C_OPTS" fzf-tmux -d${FZF_TMUX_HEIGHT:-40%} +m)"
-  if [[ -z "$gopath$dir" ]]; then
+  if [[ -z "$dir" ]]; then
     zle redisplay
     return 0
   fi

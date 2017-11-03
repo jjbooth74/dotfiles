@@ -312,7 +312,7 @@
   endfunction
 
   command! -nargs=* QfAg call fzf#run({
-  \ 'source':  printf('ag --nogroup --column --color "%s"',
+  \ 'source':  printf('rg --no-heading --column "%s"',
   \                   escape(empty(<q-args>) ? '^(?=.)' : <q-args>, '"\')),
   \ 'sink*':    function('<sid>ag_handler'),
   \ 'options': '--ansi --expect=ctrl-t,ctrl-v,ctrl-x --delimiter : --nth 4.. '.
