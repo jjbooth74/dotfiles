@@ -8,7 +8,6 @@
   call plug#begin('~/.vim/plugged')
     " Make VIM more application like
     Plug 'tpope/vim-sensible'                    " 'sensible defaults'
-    Plug 'tpope/vim-obsession'                   " Autosave sessions
     Plug 'junegunn/fzf.vim'                      " A wrapper to make easy generic fuzzyfinders
     Plug 'scrooloose/nerdtree'                   " File tree
     Plug 'flazz/vim-colorschemes'                " Just a bunch of colors
@@ -21,23 +20,27 @@
     Plug 'tpope/vim-surround'                    " Change surround characters e.g. cs[(
     Plug 'tpope/vim-commentary'                  " Use gc to comment text objects
     Plug 'michaeljsmith/vim-indent-object'       " creates ii/ai/aI text objects
+    Plug 'junegunn/vim-easy-align'               " align things using e.g. gaip
 
     " Language Support
-    Plug 'pangloss/vim-javascript'               " JS support
+    " Go
     Plug 'fatih/vim-go'
+    Plug 'garyburd/go-explorer'
+    Plug 'ddollar/golang-template.vim'
+    " JS
     Plug 'maxmellon/vim-jsx-pretty'              " JSX support
+    Plug 'pangloss/vim-javascript'               " JS support
     Plug 'isRuslan/vim-es6'
+    Plug 'kchmck/vim-coffee-script'              " Coffeescript language support
+    " Ruby
     Plug 'tpope/vim-rbenv'
     Plug 'vim-ruby/vim-ruby'                     " Ruby support
-    Plug 'kchmck/vim-coffee-script'              " Coffeescript language support
-    Plug 'mustache/vim-mustache-handlebars'      " Mustache syntax
-    Plug 'shmup/vim-sql-syntax'                  " SQL Syntax
+    " Others
+    Plug 'docker/docker', {'rtp': '/contrib/syntax/vim'}
 
     " IDE
     Plug 'w0rp/ale'                              " Asynchronous Lint Engine
-    Plug 'craigemery/vim-autotag'                " Automatically update tag files
-    Plug 'majutsushi/tagbar'                     " Show a tag-based outline
-    Plug 'ervandew/supertab'                     " Use tab to autocomplete things
+    Plug 'ajh17/VimCompletesMe'
     Plug 'easymotion/vim-easymotion'             " Magic navigation
 
     " GIT
@@ -46,11 +49,11 @@
 
     " Tmux
     Plug 'christoomey/vim-tmux-navigator'        " Make pane nav seamless within tmux
-    Plug 'edkolev/tmuxline.vim'                  " Sync airline -> Tmux status line
+    " Plug 'edkolev/tmuxline.vim'                  " Sync airline -> Tmux status line
 
     " Stupid but glorious
-    Plug 'AndreaOrru/fzf-mopidy-spotify.vim'       " Adds spotify commands
-    Plug 'durgaswaroop/vim-mpc'                    " Adds MPC control
+    " Plug 'AndreaOrru/fzf-mopidy-spotify.vim'       " Adds spotify commands
+    " Plug 'durgaswaroop/vim-mpc'                    " Adds MPC control
   call plug#end()
 " }}}
 
@@ -80,112 +83,21 @@
 
 " FZF {{{
   let g:fzf_command_prefix = 'Fzf'
-  nnoremap <C-p>      :FzfGFiles<cr>
+  nnoremap <C-p>      :FzfFiles<cr>
   nnoremap <C-b>      :FzfBuffers<cr>
-  nnoremap <leader>ag :FzfAg 
-  nnoremap <leader>af :QfAg 
+  nnoremap <leader>ff :QfAg 
 " }}}
 
 " KEYS {{{
-  " LEADER = <cr>
-  " RESERVED:
-  " Vim appears to store bindings in a tree,
-  " debouncing input w/a delay at any inner node.
-  " For certain bindings this is a pain because that
-  " delay is noticeable, e.g. for changing tabs.
-  " The best way to avoid that delay while still having a
-  " usable debounce for other inputs is by ensuring
-  " 'important' bindings are leaf nodes.  The following
-  " should always be leaves:
-  " <leader>t - next tab
-  " <leader>T - prev tab
-  " <leader>x - close tab
- 
-  " Use <leader> k & j to move lines up and down
-  " nnoremap <leader>j :m+<cr>
-  " nnoremap <leader>k :m-2<cr>
+  nnoremap <leader>l  :noh<cr>
+  nnoremap <leader>o  :NERDTreeToggle<cr>
+  nnoremap <leader>x  :q<cr>
 
-  " Reload file from disk
-  nnoremap <leader>e :e %<cr>
+  nnoremap <leader>ev :tabe ~/.vimrc<cr>
+  nnoremap <leader>et :tabe ~/.tmux.conf<cr>
+  nnoremap <leader>ez :tabe ~/.zshrc<cr>
 
-  " Toggle linting
-  nnoremap <leader>r :SyntasticToggleMode<cr>
-
-  " Reset colors
-  nnoremap <leader>cr :silent ! source ~/.base16_theme<cr>:redraw!<cr>
-
-  " Magit opens in a split-right pane.
-  " This creates a new blank tab, opens Magit,
-  " then closes the left split
-  nnoremap <leader>git :tabe<cr>:Magit<cr><C-w><C-h>:close<cr>
-
-  " Start interactive easy align in visual mode (vipga)
-  xmap ga <Plug>(EasyAlign)
-  " Start interactive EasyAlign for a motion/text object (gaip)
-  nmap ga <Plug>(EasyAlign)
-
-  " Fold things.
-  nnoremap <leader>z :setlocal foldexpr=(getline(v:lnum)=~@/)?0:(getline(v:lnum-1)=~@/)\\|\\|(getline(v:lnum+1)=~@/)?1:2 foldmethod=expr foldlevel=0 foldcolumn=2<CR>
-  nnoremap <leader>m :TagbarToggle<cr>
-  nnoremap <leader>l :noh<cr>
-" }}}
-
-" TAB NAV {{{
-  function! TabOrBuffer(...)
-    let l:tab = (a:0 >= 1) ? a:1 : 'tab'
-    let l:buf = (a:0 >= 2) ? a:2 : 'b'
-    let l:cmd = (tabpagenr('$') > 1) ? l:tab : l:buf
-    return l:cmd
-  endfunction
-
-  function! Move_tab_or_buffer(direction)
-    execute TabOrBuffer() . a:direction
-  endfunction
-  command! NextFile call Move_tab_or_buffer('n')
-  command! PrevFile call Move_tab_or_buffer('p')
-
-  function! Close_tab_or_buffer()
-    execute TabOrBuffer('tabclose', 'bd')
-  endfunction
-  command! CloseFile call Close_tab_or_buffer()
-
-  function! SelectBufferOrTab(n)
-    execute TabOrBuffer('tabn ', 'b ') . a:n
-  endfunction
-
-  nnoremap <leader>t :NextFile<cr>
-  nnoremap <leader>T :PrevFile<cr>
-  nnoremap <leader>x :CloseFile<cr>
-  nnoremap <leader>1 :call SelectBufferOrTab(1)<cr>
-  nnoremap <leader>2 :call SelectBufferOrTab(2)<cr>
-  nnoremap <leader>3 :call SelectBufferOrTab(3)<cr>
-  nnoremap <leader>4 :call SelectBufferOrTab(4)<cr>
-  nnoremap <leader>5 :call SelectBufferOrTab(5)<cr>
-  nnoremap <leader>6 :call SelectBufferOrTab(6)<cr>
-  nnoremap <leader>7 :call SelectBufferOrTab(7)<cr>
-  nnoremap <leader>8 :call SelectBufferOrTab(8)<cr>
-  nnoremap <leader>9 :call SelectBufferOrTab(9)<cr>
-  nnoremap <leader>10 :call SelectBufferOrTab(10)<cr>
-  nnoremap <leader>11 :call SelectBufferOrTab(11)<cr>
-  nnoremap <leader>12 :call SelectBufferOrTab(12)<cr>
-  nnoremap <leader>13 :call SelectBufferOrTab(13)<cr>
-  nnoremap <leader>14 :call SelectBufferOrTab(14)<cr>
-  nnoremap <leader>15 :call SelectBufferOrTab(15)<cr>
-  nnoremap <leader>16 :call SelectBufferOrTab(16)<cr>
-  nnoremap <leader>17 :call SelectBufferOrTab(17)<cr>
-  nnoremap <leader>18 :call SelectBufferOrTab(18)<cr>
-  nnoremap <leader>19 :call SelectBufferOrTab(19)<cr>
-  nnoremap <leader>20 :call SelectBufferOrTab(20)<cr>
-  nnoremap <leader>21 :call SelectBufferOrTab(21)<cr>
-  nnoremap <leader>22 :call SelectBufferOrTab(22)<cr>
-  nnoremap <leader>23 :call SelectBufferOrTab(23)<cr>
-  nnoremap <leader>24 :call SelectBufferOrTab(24)<cr>
-  nnoremap <leader>25 :call SelectBufferOrTab(25)<cr>
-  nnoremap <leader>26 :call SelectBufferOrTab(26)<cr>
-  nnoremap <leader>27 :call SelectBufferOrTab(27)<cr>
-  nnoremap <leader>28 :call SelectBufferOrTab(28)<cr>
-  nnoremap <leader>29 :call SelectBufferOrTab(29)<cr>
-  nnoremap <leader>30 :call SelectBufferOrTab(30)<cr>
+  nnoremap <leader>vv :source ~/.vimrc<cr>
 " }}}
 
 " SMOOTH-SCROLL {{{
@@ -220,13 +132,28 @@
   nnoremap <C-k> <C-w><C-k>
   nnoremap <C-l> <C-w><C-l>
   nnoremap <C-h> <C-w><C-h>
+
+  " Zoom / Restore window.
+  function! s:ZoomToggle() abort
+      if exists('t:zoomed') && t:zoomed
+          execute t:zoom_winrestcmd
+          let t:zoomed = 0
+      else
+          let t:zoom_winrestcmd = winrestcmd()
+          resize
+          vertical resize
+          let t:zoomed = 1
+      endif
+  endfunction
+  command! ZoomToggle call s:ZoomToggle()
+  nnoremap <C-s> :ZoomToggle<CR>
 " }}} SPLITS
 
 " GENERAL {{{
   set listchars=eol:¬,tab:»\ ,trail:~,extends:>,precedes:<
   set list
   set clipboard=unnamed
-  set cursorline
+  " set cursorline " // BAD PERFORMANCE FOR SOME REASON?!?!
   set colorcolumn=117
   highlight ColorColumn ctermbg=black
   set hlsearch
@@ -238,6 +165,7 @@
   setlocal numberwidth=5
   set wildmode=list:longest,full
   set nocompatible
+  set formatoptions+=j
 " }}}
 
 " FUZZYFIND {{{
@@ -257,15 +185,16 @@
   autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif " execute "Unite -start-insert -no-split file_rec" | endif
 " }}} NERDTREE
 
-
 " ALE {{{
   let g:ale_sign_column_always = 1
-  let g:ale_sign_error = '👎'
-  let g:ale_sign_warning = '💩'
+  " let g:ale_sign_error = '👎'
+  " let g:ale_sign_warning = '💩'
   let g:ale_fixers = {
         \ 'ruby': ['rubocop', 'remove_trailing_lines'],
-        \ 'go': ['remove_traling_lines', 'trim_whitespace'],
-        \ 'yaml': ['remove_trailing_lines', 'trim_whitespace']
+        \ 'go': ['remove_trailing_lines', 'trim_whitespace'],
+        \ 'vim': ['remove_trailing_lines', 'trim_whitespace'],
+        \ 'yaml': ['remove_trailing_lines', 'trim_whitespace'],
+        \ 'json': ['remove_trailing_lines', 'trim_whitespace', 'jq']
         \}
   let g:ale_fix_on_save = 0
   let g:ale_ruby_rubocop_executable = '/Users/jbooth/.rbenv/shims/rubocop'
@@ -283,6 +212,39 @@
     let &t_EI = "\<Esc>]50;CursorShape=0\x7"
   endif
 " }}} CURSOR
+
+" FILE RESULTS TO QF {{{
+  function! s:filename_to_qf(f)
+    execute "echom '" . escape(a:f, ' %#\') . "'"
+    return {'filename': a:f}
+  endfunction
+
+  function! s:files_handler(lines)
+    if len(a:lines) < 2 | return | endif
+    let cmd = get({'ctrl-x': 'split',
+                 \ 'ctrl-v': 'vertical split',
+                 \ 'ctrl-t': 'tabe'}, a:lines[0], 'e')
+
+    execute cmd escape(a:lines[1], ' %#\')
+
+    let list = map(a:lines[1:], 's:filename_to_qf(v:val)')
+
+    if len(list) > 1
+      call setqflist(list)
+      copen
+      wincmd p
+    endif
+  endfunction
+
+  command! -nargs=0 FuzzyFile call fzf#run({
+        \ 'source': 'rg --files --no-heading ',
+        \ 'sink*': function('<sid>files_handler'),
+        \ 'options': '--ansi --expect=ctrl-t,ctrl-v,ctrl-x '.
+        \            '--multi --bind=ctrl-a:select-all,ctrl-d:deselect-all '.
+        \            '--color hl:68,hl+:110',
+        \ 'down': '50%'
+        \ })
+" }}}
 
 " AG RESULTS TO QUICKFIX {{{
   function! s:ag_to_qf(line)
@@ -312,7 +274,7 @@
   endfunction
 
   command! -nargs=* QfAg call fzf#run({
-  \ 'source':  printf('rg --no-heading --column "%s"',
+  \ 'source':  printf('rg --no-ignore -g ''!vendor/'' --no-heading --column "%s"',
   \                   escape(empty(<q-args>) ? '^(?=.)' : <q-args>, '"\')),
   \ 'sink*':    function('<sid>ag_handler'),
   \ 'options': '--ansi --expect=ctrl-t,ctrl-v,ctrl-x --delimiter : --nth 4.. '.
@@ -320,8 +282,75 @@
   \            '--color hl:68,hl+:110',
   \ 'down':    '50%'
   \ })
+
+  command! -nargs=* Funky call fzf#run({
+              \ 'source': printf('rg --no-heading --column -e "func (\(.+\) )*%s\w+"',
+              \                   escape(empty(<q-args>) ? '^(?=.)' : <q-args>, '"\')),
+              \ 'sink*': function('<sid>ag_handler'),
+              \ 'options': '--ansi --expect=ctrl-t,ctrl-v,ctrl-x '.
+              \            '--multi --bind=ctrl-a:select-all,ctrl-d:deselect-all ',
+              \ 'down': '50%'
+              \ })
 " }}} AG
+
+" DOCKER {{{
+  autocmd BufNewFile,BufRead *.df set filetype=dockerfile
+" }}}
 
 " JS {{{
   let g:vim_jsx_pretty_colorful_config = 1
+" }}}
+
+" GO {{{
+  " let g:go_auto_type_info        = 1
+  let g:go_highlight_types       = 1
+  let g:go_highlight_fields      = 1
+  let g:go_highlight_functions   = 1
+  let g:go_highlight_methods     = 1
+  let g:go_highlight_operators   = 1
+  let g:go_highlight_extra_types = 1
+  let g:go_fmt_command           = "goimports"
+
+  set updatetime=750
+
+  " run :GoBuild or :GoTestCompile based on the go file
+  function! s:build_go_files()
+    let l:file = expand('%')
+    if l:file =~# '^\f\+_test\.go$'
+      call go#test#Test(0, 1)
+    elseif l:file =~# '^\f\+\.go$'
+      call go#cmd#Build(0)
+    endif
+  endfunction
+  autocmd FileType go nmap <leader>gb :<C-u>call <SID>build_go_files()<CR>
+
+  autocmd FileType go nmap <leader>gr <Plug>(go-rename)
+  autocmd FileType go nmap <leader>gt <Plug>(go-test)
+  autocmd FileType go nmap <leader>gc <Plug>(go-coverage-toggle)
+  autocmd FileType go nmap <leader>ga <Plug>(go-alternate-vertical)
+  autocmd FileType go nmap <leader>gd :GoDoc<cr>
+  autocmd FileType go nmap <leader>gx :GoRun<cr>
+  autocmd FileType go nmap <leader>gi <Plug>(go-info)
+  autocmd FileType go set tabstop=4
+  autocmd FileType go set shiftwidth=4
+  autocmd FileType gotmpl set tabstop=4
+  autocmd FileType gotmpl set shiftwidth=4
+" }}}
+
+" QUICKFIX {{{
+  autocmd FileType qf wincmd J
+" }}}
+
+" OMNI-COMPLETE {{{
+  " See http://vim.wikia.com/wiki/VimTip1386
+
+  " By default, complete up to the 'lowest common denominator'
+  set completeopt=longest,menu,preview
+
+  " Make enter select whatever is highlighted
+  inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+  " Will make <C-N> work the way it normally does; however, when the menu appears, the <Down> key will be simulated. What this accomplishes is it keeps a menu item always highlighted. This way you can keep typing characters to narrow the matches, and the nearest match will be selected so that you can hit Enter at any time to insert it.
+  inoremap <expr> <C-n> pumvisible() ? '<C-n>' :
+    \ '<C-n><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
 " }}}
