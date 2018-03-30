@@ -12,7 +12,7 @@ alias pg="ps ax | grep"
 
 #profile:
 alias profile="$EDITOR ~/.zshrc"
-alias aliases="$EDITOR ~/.alias"
+alias aliases="$EDITOR ~/.config/shell/alias.sh"
 alias refresh="source ~/.zshrc"
 
 #git:
