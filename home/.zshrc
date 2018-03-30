@@ -18,8 +18,6 @@ set -o physical
 
 export EDITOR='vim'
 
-source ~/.alias
-
 # RBENV setup
 eval "$(rbenv init -)"
 
@@ -41,13 +39,8 @@ eval "$(direnv hook zsh)"
 # TMUXINATOR
 [ -f ~/.bin/tmuxinator.zsh ] && source ~/.bin/tmuxinator.zsh
 
-# Oracle proxies is dumb
-export HTTP_PROXY=http://www-proxy.us.oracle.com:80/
-export HTTPS_PROXY=http://www-proxy.us.oracle.com:80/
-export http_proxy=$HTTP_PROXY
-export https_proxy=$HTTPS_PROXY
+# Aliases
+[ -f ~/.config/shell/alias.sh ] && source ~/.config/shell/alias.sh
 
-# Dont go through proxy for minikube
-printf -v mk_ips '%s,' 192.168.99.{1..255};
-export NO_PROXY="127.0.0.1,localhost,.oracle.com,.oraclecorp.com,.dev,.grungy.us,.local,.r0,.r1,.r2,.corp.dyndns.com,$mk_ips"
-export no_proxy=$NO_PROXY
+# Toggle proxies
+[ -f ~/.config/shell/proxies.sh ] && source ~/.config/shell/proxies.sh
