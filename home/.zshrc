@@ -8,8 +8,11 @@ ZSH_THEME="spaceship"
 
 COMPLETION_WAITING_DOTS="true"
 
+# Don't wait for escape forever
+KEYTIMEOUT=1
+
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-plugins=(brew docker git git-extras osx pip tig tmux tmuxinator vi-mode)
+plugins=(brew docker git git-extras osx pip tig tmux tmuxinator vi-mode thefuck)
 
 source $ZSH/oh-my-zsh.sh
 unsetopt share_history # No.
@@ -23,6 +26,9 @@ eval "$(rbenv init -)"
 
 # DIRENV
 eval "$(direnv hook zsh)"
+
+# STERN (k8s pod log streaming)
+source <(stern --completion=zsh)
 
 # NVM setup
 # export NVM_DIR="/Users/jbooth/.nvm"

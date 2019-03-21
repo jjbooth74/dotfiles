@@ -12,6 +12,7 @@
     Plug 'scrooloose/nerdtree'                   " File tree
     Plug 'flazz/vim-colorschemes'                " Just a bunch of colors
     Plug 'chriskempson/base16-vim'               " Fancy colors
+    Plug 'tomasiser/vim-code-dark'               " VSCode colors
     Plug 'cskeeters/vim-smooth-scroll'           " Smooth scrolling
     Plug 'vim-airline/vim-airline'
     Plug 'vim-airline/vim-airline-themes'
@@ -49,7 +50,7 @@
 
     " Tmux
     Plug 'christoomey/vim-tmux-navigator'        " Make pane nav seamless within tmux
-    " Plug 'edkolev/tmuxline.vim'                  " Sync airline -> Tmux status line
+    Plug 'edkolev/tmuxline.vim'                  " Sync airline -> Tmux status line
 
     " Stupid but glorious
     " Plug 'AndreaOrru/fzf-mopidy-spotify.vim'       " Adds spotify commands
@@ -67,7 +68,8 @@
 
   if filereadable(expand('~/.vimrc_background'))
     let base16colorspace=256
-    source ~/.vimrc_background
+    " source ~/.vimrc_background
+    colorscheme codedark
   else
     colorscheme Tomorrow-Night-Bright
   endif
@@ -85,10 +87,14 @@
   let g:fzf_command_prefix = 'Fzf'
   nnoremap <C-p>      :FzfFiles<cr>
   nnoremap <C-b>      :FzfBuffers<cr>
+  nnoremap <C-s>      :QfAg 
   nnoremap <leader>ff :QfAg 
 " }}}
 
 " KEYS {{{
+  " Don't wait around forever for multiple keypresses.
+  set timeoutlen=1000
+  set ttimeoutlen=0
   nnoremap <leader>l  :noh<cr>
   nnoremap <leader>o  :NERDTreeToggle<cr>
   nnoremap <leader>x  :q<cr>
@@ -119,7 +125,7 @@
         \'x'    : '𝄆 #(mpc current) 𝄇',
         \'y'    : '#(date)',
         \}
-  let g:airline_theme='base16_eighties'
+  let g:airline_theme='codedark'
   " 'fairyfloss' 'hybrid' 'lucius' 'powerlineish' 'raven' 'ravenpower'+++ 'serene' 'sol'
   " 'tomorrow' 'understated' 'base16_eighties'
 " }}}
@@ -146,7 +152,7 @@
       endif
   endfunction
   command! ZoomToggle call s:ZoomToggle()
-  nnoremap <C-s> :ZoomToggle<CR>
+  nnoremap <M-z> :ZoomToggle<CR>
 " }}} SPLITS
 
 " GENERAL {{{
@@ -246,6 +252,51 @@
         \ })
 " }}}
 
+" GURU RESULTS TO QUICKFIX {{{
+  function! s:guru_to_qf(line)
+    let parts = split(a:line, ' ')
+    let fparts = split(parts[0], ':')
+    return {'filename': fparts[0], 'lnum': fparts[1], 'col': fparts[2],
+          \ 'text': parts[1] }
+  endfunction
+
+  function! Fuzzyguru_parser(lines)
+    if len(a:lines) < 2 | return | endif
+    let cmd = get({'ctrl-x': 'split',
+                 \ 'ctrl-v': 'vertical split',
+                 \ 'ctrl-t': 'tabe'}, a:lines[0], 'e')
+
+    let list = map(a:lines[1:], 's:guru_to_qf(v:val)')
+
+    let first = list[0]
+    execute cmd escape(first.filename, ' %#\')
+    execute first.lnum
+    execute 'normal!' first.col.'|zz'
+
+    if len(list) > 1
+      call setqflist(list)
+      copen
+      wincmd p
+    endif
+  endfunction
+
+  function! FuzzyGuru(query)
+    let p=expand('%:p')
+    let b=line2byte(line('.')) + col('.') - 1
+    let filearg=p.':#'.b
+    let fuzzyguru_scope = 'github.corp.dyndns.com/waas/waas_control_plane_api/...,-github.corp.dyndns.com/waas/waas_control_plane_api/vendor/...'
+
+    call fzf#run({
+      \ 'source': 'guru -scope "'.fuzzyguru_scope.'" '.a:query.' '.filearg .'| sed -n ''1!p''',
+      \ 'sink*':   function('Fuzzyguru_parser'),
+      \ 'options': '--ansi --expect=ctrl-t,ctrl-v,ctrl-x --delimiter : --nth 4.. '.
+      \            '--multi --bind=ctrl-a:select-all,ctrl-d:deselect-all '.
+      \            '--color hl:68,hl+:110',
+      \ 'down':    '50%'
+      \ })
+  endfunction
+" }}} GURU RESULTS TO QUICKFIX
+
 " AG RESULTS TO QUICKFIX {{{
   function! s:ag_to_qf(line)
     let parts = split(a:line, ':')
@@ -282,15 +333,6 @@
   \            '--color hl:68,hl+:110',
   \ 'down':    '50%'
   \ })
-
-  command! -nargs=* Funky call fzf#run({
-              \ 'source': printf('rg --no-heading --column -e "func (\(.+\) )*%s\w+"',
-              \                   escape(empty(<q-args>) ? '^(?=.)' : <q-args>, '"\')),
-              \ 'sink*': function('<sid>ag_handler'),
-              \ 'options': '--ansi --expect=ctrl-t,ctrl-v,ctrl-x '.
-              \            '--multi --bind=ctrl-a:select-all,ctrl-d:deselect-all ',
-              \ 'down': '50%'
-              \ })
 " }}} AG
 
 " DOCKER {{{
@@ -302,16 +344,39 @@
 " }}}
 
 " GO {{{
-  " let g:go_auto_type_info        = 1
-  let g:go_highlight_types       = 1
-  let g:go_highlight_fields      = 1
-  let g:go_highlight_functions   = 1
-  let g:go_highlight_methods     = 1
-  let g:go_highlight_operators   = 1
-  let g:go_highlight_extra_types = 1
-  let g:go_fmt_command           = "goimports"
+  " Misc settings
+  let g:go_auto_type_info   = 1
+  let g:go_updatetime       = 750
+  let g:go_jump_to_error    = 0
+  let g:go_term_enabled     = 0 " Run tests, etc in neovims terminal
+  let g:go_def_reuse_buffer = 0 " Use existing buffer if file is open
+  let g:go_test_show_name   = 1 " Show test name in test output
 
-  set updatetime=750
+  " Syntax highlighting
+  let g:go_highlight_array_whitespace_error    = 0
+  let g:go_highlight_chan_whitespace_error     = 0
+  let g:go_highlight_extra_types               = 0
+  let g:go_highlight_space_tab_error           = 0
+  let g:go_highlight_trailing_whitespace_error = 0
+  let g:go_highlight_operators                 = 1
+  let g:go_highlight_methods                   = 1
+  let g:go_highlight_functions                 = 1
+  let g:go_highlight_function_arguments        = 0
+  let g:go_highlight_function_calls            = 1
+  let g:go_highlight_types                     = 1
+  let g:go_highlight_fields                    = 0
+  let g:go_highlight_build_constraints         = 1
+  let g:go_highlight_generate_tags             = 0
+  let g:go_highlight_string_spellcheck         = 1
+  let g:go_highlight_format_strings            = 1
+  let g:go_highlight_variable_declarations     = 0
+  let g:go_highlight_variable_assignments      = 0
+
+  let g:go_fmt_command         = "goimports"
+  let g:go_fmt_autosave        = 1
+  let g:go_metalinter_autosave = 0
+  let g:go_alternate_mode      = 'vsplit' " Open test files in a vsplit
+  let g:go_decls_mode          = 'fzf'
 
   " run :GoBuild or :GoTestCompile based on the go file
   function! s:build_go_files()
@@ -326,15 +391,19 @@
 
   autocmd FileType go nmap <leader>gr <Plug>(go-rename)
   autocmd FileType go nmap <leader>gt <Plug>(go-test)
-  autocmd FileType go nmap <leader>gc <Plug>(go-coverage-toggle)
   autocmd FileType go nmap <leader>ga <Plug>(go-alternate-vertical)
   autocmd FileType go nmap <leader>gd :GoDoc<cr>
   autocmd FileType go nmap <leader>gx :GoRun<cr>
-  autocmd FileType go nmap <leader>gi <Plug>(go-info)
+  " autocmd FileType go nmap <leader>gc <Plug>(go-coverage-toggle)
+  " autocmd FileType go nmap <leader>gi <Plug>(go-info)
+  autocmd FileType go nnoremap <leader>gc :call FuzzyGuru('callers')<cr>
+  autocmd FileType go nnoremap <leader>gi :call FuzzyGuru('callees')<cr>
   autocmd FileType go set tabstop=4
   autocmd FileType go set shiftwidth=4
   autocmd FileType gotmpl set tabstop=4
   autocmd FileType gotmpl set shiftwidth=4
+  " autocmd BufRead /Users/jbooth-mac/go/src/github.corp.dyndns.com/waas/waas_control_plane_api/*.go
+  "       \ :GoGuruScope github.corp.dyndns.com/waas/waas_control_plane_api/...
 " }}}
 
 " QUICKFIX {{{
