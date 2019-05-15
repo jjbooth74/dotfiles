@@ -1,10 +1,10 @@
-export PATH=$HOME/bin:$HOME/go/bin:/usr/local/bin:/usr/local/opt/go/libexec/bin:$PATH
+export PATH=$HOME/.local/bin:$HOME/bin:$HOME/go/bin:/usr/local/bin:/usr/local/opt/go/libexec/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH=/Users/jbooth-mac/.oh-my-zsh
+export ZSH=/home/josh/.oh-my-zsh
 
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="spaceship"
+ZSH_THEME="amuse"
 
 COMPLETION_WAITING_DOTS="true"
 
@@ -12,7 +12,7 @@ COMPLETION_WAITING_DOTS="true"
 KEYTIMEOUT=1
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-plugins=(brew docker git git-extras osx pip tig tmux tmuxinator vi-mode thefuck)
+plugins=(docker git git-extras pip tig tmux tmuxinator vi-mode)
 
 source $ZSH/oh-my-zsh.sh
 unsetopt share_history # No.
@@ -22,17 +22,10 @@ set -o physical
 export EDITOR='vim'
 
 # RBENV setup
-eval "$(rbenv init -)"
-
-# DIRENV
-eval "$(direnv hook zsh)"
+# eval "$(rbenv init -)"
 
 # STERN (k8s pod log streaming)
-source <(stern --completion=zsh)
-
-# NVM setup
-# export NVM_DIR="/Users/jbooth/.nvm"
-# [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+# source <(stern --completion=zsh)
 
 # FUZZYFIND
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
@@ -48,3 +41,5 @@ source <(stern --completion=zsh)
 # Aliases
 [ -f ~/.config/shell/alias.sh ] && source ~/.config/shell/alias.sh
 
+# THE FUCK!?
+eval $(thefuck --alias)
