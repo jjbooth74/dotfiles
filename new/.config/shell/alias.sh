@@ -1,12 +1,28 @@
-# for now?
 alias vim="nvim"
+
 #nav:
-alias ls="ls -aFG"
+alias ls="ls -aFG --color=auto"
 alias cls="clear;printf '\n';pwd;printf '\n';ls -FG"
 alias ..="cd .."
 alias up="clear;cd ..;pwd;ls -FG"
-dev() { cd ~/Development/$1;clear;printf '\n';pwd;printf '\n';git status; }
+dev() { 
+  cd ~/Development
+
+  if [[ ! -z "$1" ]]
+  then
+    # clone the repo if we don't already have it
+    [[ ! -d "$1" ]] && clone $1;
+    cd $1;
+  fi
+
+  clear;
+  printf '\n';
+  pwd;
+  printf '\n';
+  ([[ -d ".git" ]] && git status);
+}
 compctl -/ -W ~/Development dev
+alias devtools="dev devtools"
 alias path="tr ':' '\\n' <<< \"$PATH\""
 
 #profile:
@@ -18,7 +34,13 @@ alias refresh="source ~/.zshrc"
 alias pull="git pull --ff-only origin"
 alias fetch="git fetch --all"
 alias status="git status"
-alias master="git checkout master"
+alias master="git checkout master; echo 'Did you mean develop?';"
+alias develop="git checkout develop"
+alias d="develop"
+clone() { git clone git@github.com:${2:-algorithmiaio}/$1; }
+
+#k8s:
+alias k="kubectl"
 
 #ruby:
 alias rd="RAILS_ENVIRONMENT=development"
@@ -41,16 +63,3 @@ onepass() { op get item $1 | jq -r '.details.fields[] | select(.designation=="pa
 
 #music
 alias music="ncmpcpp"
-
-#mcafee
-# firewall_stop() {
-#    res=$(sudo /usr/local/McAfee/StatefulFirewall/bin/StatefullFirewallControl status)
-#    echo "McAfee :" $res
-#    running="is running"
-#    if [[ $res = *$running* ]]; then
-#       echo "Stop McAfee Firewall temporarily"
-#       sudo /usr/local/McAfee/StatefulFirewall/bin/StatefullFirewallControl stop
-#    fi
-# }
-
-# alias mcstop='firewall_stop'

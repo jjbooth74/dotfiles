@@ -1,7 +1,7 @@
-export PATH=$HOME/.local/bin:$HOME/bin:$HOME/go/bin:/usr/local/bin:/usr/local/opt/go/libexec/bin:$PATH
+export PATH=$HOME/.local/bin:$HOME/bin:$HOME/go/bin:/usr/local/bin:/usr/local/opt/go/libexec/bin:/snap/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH=/home/josh/.oh-my-zsh
+export ZSH=$HOME/.oh-my-zsh
 
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 ZSH_THEME="amuse"
@@ -12,7 +12,7 @@ COMPLETION_WAITING_DOTS="true"
 KEYTIMEOUT=1
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-plugins=(docker git git-extras pip tig tmux tmuxinator vi-mode)
+plugins=(docker git git-extras git-flow-completion pip tig vi-mode)
 
 source $ZSH/oh-my-zsh.sh
 unsetopt share_history # No.
@@ -43,3 +43,7 @@ export EDITOR='vim'
 
 # THE FUCK!?
 eval $(thefuck --alias)
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
